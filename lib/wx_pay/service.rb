@@ -516,9 +516,7 @@ module WxPay
     end
 
     # 单次分账
-
     PROFITSHARING = [:nonce_str, :receivers, :transaction_id, :out_order_no]
-
     def self.profitsharing(params, options = {})
       params = {
         appid: options.delete(:appid) || WxPay.appid,
@@ -539,6 +537,23 @@ module WxPay
 
       yield r if block_given?
 
+      r
+    end
+
+    # 查看分账结果
+    PROFITSHARINGQUERY = [:nonce_str, :transaction_id, :out_order_no]
+    def self.profitsharingquery(params, options={})
+      params = {
+        appid: options.delete(:appid) || WxPay.appid,
+        mch_id: options.delete(:mch_id) || WxPay.mch_id,
+        nonce_str: SecureRandom.uuid.tr('-', ''),
+        key: options.delete(:key) || WxPay.key
+      }.merge(params)
+
+      check_required_options(params, PROFITSHARINGQUERY)
+
+      r = WxPay::Result.new(Hash.from_xml(invoke_remote("/pay/profitsharingquery", make_payload(params, WxPay::Sign::SIGN_TYPE_HMAC_SHA256), options)))
+      yield r if block_given?
       r
     end
 
