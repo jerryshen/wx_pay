@@ -557,6 +557,29 @@ module WxPay
       r
     end
 
+    # 分账回退
+    PROFITSHARINGRETURN = [:nonce_str, :order_id, :out_return_no, :return_account_type, :return_account, :return_amount, :description]
+    def self.profitsharingreturn(params, options={})
+      params = {
+        appid: options.delete(:appid) || WxPay.appid,
+        mch_id: options.delete(:mch_id) || WxPay.mch_id,
+        nonce_str: SecureRandom.uuid.tr('-', ''),
+        key: options.delete(:key) || WxPay.key
+      }.merge(params)
+
+      check_required_options(params, PROFITSHARING)
+
+      options = {
+        ssl_client_cert: options.delete(:apiclient_cert) || WxPay.apiclient_cert,
+        ssl_client_key: options.delete(:apiclient_key) || WxPay.apiclient_key,
+        verify_ssl: OpenSSL::SSL::VERIFY_NONE
+      }.merge(options)
+
+      r = WxPay::Result.new(Hash.from_xml(invoke_remote("/secapi/pay/profitsharingreturn", make_payload(params, WxPay::Sign::SIGN_TYPE_HMAC_SHA256), options)))
+      yield r if block_given?
+      r
+    end
+
     class << self
       private
 
