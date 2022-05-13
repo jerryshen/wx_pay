@@ -503,7 +503,7 @@ module WxPay
         appid: options.delete(:appid) || WxPay.appid,
         mch_id: options.delete(:mch_id) || WxPay.mch_id,
         nonce_str: SecureRandom.uuid.tr('-', ''),
-        key: options.delete(:key) || WxPay.key
+        key: options.delete(:key) || WxPay.key,
       }.merge(params)
 
       check_required_options(params, PROFITSHARINGADDRECEIVER)
@@ -547,6 +547,10 @@ module WxPay
         nonce_str: SecureRandom.uuid.tr('-', ''),
         key: options.delete(:key) || WxPay.key
       }.merge(params)
+
+      p "====================="
+      p params
+      p "====================="
 
       check_required_options(params, PROFITSHARINGQUERY)
 
