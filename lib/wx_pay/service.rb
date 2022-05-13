@@ -586,7 +586,6 @@ module WxPay
     PROFITSHARINGORDERAMOUNTQUERY = [:nonce_str, :transaction_id]
     def self.profitsharingorderamountquery(params, options={})
       params = {
-        appid: options.delete(:appid) || WxPay.appid,
         mch_id: options.delete(:mch_id) || WxPay.mch_id,
         nonce_str: SecureRandom.uuid.tr('-', ''),
         key: options.delete(:key) || WxPay.key
