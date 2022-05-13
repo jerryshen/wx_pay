@@ -615,11 +615,12 @@ module WxPay
       end
 
       def xmlify_payload(params, sign_type = WxPay::Sign::SIGN_TYPE_MD5)
-        p "@@@@@@@@@@2"
-        p params
-        p "@@@@@@@@@@"
         sign = WxPay::Sign.generate(params, sign_type)
-        "<xml>#{params.except(:key).sort.map { |k, v| "<#{k}>#{v}</#{k}>" }.join}<sign>#{sign}</sign></xml>"
+        xml = "<xml>#{params.except(:key).sort.map { |k, v| "<#{k}>#{v}</#{k}>" }.join}<sign>#{sign}</sign></xml>"
+        p "@@@@@@@@@@@@@@@"
+        p xml
+        p "@@@@@@@@@@@@@@@"
+        xml
       end
 
       def make_payload(params, sign_type = WxPay::Sign::SIGN_TYPE_MD5)
