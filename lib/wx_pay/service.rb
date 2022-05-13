@@ -509,9 +509,7 @@ module WxPay
       check_required_options(params, PROFITSHARINGADDRECEIVER)
 
       r = WxPay::Result.new(Hash.from_xml(invoke_remote("/pay/profitsharingremovereceiver", make_payload(params, WxPay::Sign::SIGN_TYPE_HMAC_SHA256), options)))
-
       yield r if block_given?
-
       r
     end
 
@@ -576,6 +574,23 @@ module WxPay
       }.merge(options)
 
       r = WxPay::Result.new(Hash.from_xml(invoke_remote("/secapi/pay/profitsharingreturn", make_payload(params, WxPay::Sign::SIGN_TYPE_HMAC_SHA256), options)))
+      yield r if block_given?
+      r
+    end
+
+    # 查询订单待分账金额
+    PROFITSHARINGORDERAMOUNTQUERY = [:nonce_str, :transaction_id]
+    def self.profitsharingorderamountquery(params, options={})
+      params = {
+        appid: options.delete(:appid) || WxPay.appid,
+        mch_id: options.delete(:mch_id) || WxPay.mch_id,
+        nonce_str: SecureRandom.uuid.tr('-', ''),
+        key: options.delete(:key) || WxPay.key
+      }.merge(params)
+
+      check_required_options(params, PROFITSHARINGADDRECEIVER)
+
+      r = WxPay::Result.new(Hash.from_xml(invoke_remote("/pay/profitsharingorderamountquery", make_payload(params, WxPay::Sign::SIGN_TYPE_HMAC_SHA256), options)))
       yield r if block_given?
       r
     end
