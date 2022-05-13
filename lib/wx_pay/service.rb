@@ -542,15 +542,10 @@ module WxPay
     PROFITSHARINGQUERY = [:nonce_str, :transaction_id, :out_order_no]
     def self.profitsharingquery(params, options={})
       params = {
-        appid: options.delete(:appid) || WxPay.appid,
         mch_id: options.delete(:mch_id) || WxPay.mch_id,
         nonce_str: SecureRandom.uuid.tr('-', ''),
         key: options.delete(:key) || WxPay.key
       }.merge(params)
-
-      p "====================="
-      p params
-      p "====================="
 
       check_required_options(params, PROFITSHARINGQUERY)
 
