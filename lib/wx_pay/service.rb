@@ -555,7 +555,7 @@ module WxPay
     end
 
     # 分账回退
-    PROFITSHARINGRETURN = [:nonce_str, :order_id, :out_return_no, :return_account_type, :return_account, :return_amount, :description]
+    PROFITSHARINGRETURN = [:nonce_str, :out_return_no, :return_account_type, :return_account, :return_amount, :description]
     def self.profitsharingreturn(params, options={})
       params = {
         appid: options.delete(:appid) || WxPay.appid,
@@ -611,9 +611,9 @@ module WxPay
       def xmlify_payload(params, sign_type = WxPay::Sign::SIGN_TYPE_MD5)
         sign = WxPay::Sign.generate(params, sign_type)
         xml = "<xml>#{params.except(:key).sort.map { |k, v| "<#{k}>#{v}</#{k}>" }.join}<sign>#{sign}</sign></xml>"
-        p "@@@@@@@@@@@@@@@"
+        p "================"
         p xml
-        p "@@@@@@@@@@@@@@@"
+        p "================"
         xml
       end
 
