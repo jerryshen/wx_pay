@@ -597,6 +597,7 @@ module WxPay
     PROFITSHARINGFINISH = [:nonce_str, :transaction_id, :out_order_no, :description]
     def self.profitsharingfinish(params, options={})
       params = {
+        appid: options.delete(:appid) || WxPay.appid,
         mch_id: options.delete(:mch_id) || WxPay.mch_id,
         nonce_str: SecureRandom.uuid.tr('-', ''),
         key: options.delete(:key) || WxPay.key,
