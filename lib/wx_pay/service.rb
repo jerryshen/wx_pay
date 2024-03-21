@@ -593,6 +593,21 @@ module WxPay
       r
     end
 
+    # 解冻剩余资金API
+    PROFITSHARINGFINISH = [:nonce_str, :transaction_id, :out_order_no, :description]
+    def self.profitsharingfinish(params, options={})
+      params = {
+        mch_id: options.delete(:mch_id) || WxPay.mch_id,
+        nonce_str: SecureRandom.uuid.tr('-', ''),
+        key: options.delete(:key) || WxPay.key,
+      }.merge(params)
+
+      check_required_options(params, PROFITSHARINGFINISH)
+      r = WxPay::Result.new(Hash.from_xml(invoke_remote("/secapi/pay/profitsharingfinish", make_payload(params, WxPay::Sign::SIGN_TYPE_HMAC_SHA256), options)))
+      yield r if block_given?
+      r
+    end
+
     class << self
       private
 
