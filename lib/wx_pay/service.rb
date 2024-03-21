@@ -604,6 +604,13 @@ module WxPay
       }.merge(params)
 
       check_required_options(params, PROFITSHARINGFINISH)
+
+      options = {
+        ssl_client_cert: options.delete(:apiclient_cert) || WxPay.apiclient_cert,
+        ssl_client_key: options.delete(:apiclient_key) || WxPay.apiclient_key,
+        verify_ssl: OpenSSL::SSL::VERIFY_NONE
+      }.merge(options)
+
       r = WxPay::Result.new(Hash.from_xml(invoke_remote("/secapi/pay/profitsharingfinish", make_payload(params, WxPay::Sign::SIGN_TYPE_HMAC_SHA256), options)))
       yield r if block_given?
       r
